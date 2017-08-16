@@ -185,20 +185,24 @@ html, body{
     color: #333333;
     line-height: 1.05rem;
 }
-.chat-item-his .content-share{
+.chat-item-his .content-share,
+.chat-item-mine .content-share{
     padding: 0.55rem 0.5rem;
 }
-.chat-item-his .content-share .thumb{
+.chat-item-his .content-share .thumb,
+.chat-item-mine .content-share .thumb{
     width: 2rem;
     height: 2rem;
     background: #CCC;
     overflow: hidden;
 }
-.chat-item-his .content-share .thumb img{
+.chat-item-his .content-share .thumb img,
+.chat-item-mine .content-share .thumb img{
     width: 100%;
     height: 100%;
 }
-.chat-item-his .content-share p{
+.chat-item-his .content-share p,
+.chat-item-mine .content-share p{
     margin-left: 0.25rem;
     height: 2rem;
     font-size: .75rem;
