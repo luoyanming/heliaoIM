@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>收货信息</title>
+    <link rel="stylesheet" href="../assets/css/tegong.css">
+</head>
+
+<body>
+
+    <div class="form-wrap">
+        <div class="nick-name">和聊ID：李彦</div>
+        <input name="name" type="text" class="input input-name" placeholder="收货人">
+        <input name="phone" type="number" class="input input-phone" placeholder="手机号码">
+        <textarea name="address" type="text" class="textarea input-addr" placeholder="详细地址"></textarea>
+
+        <div class="button-submit">提交</div>
+    </div>
+
+    <div class="tips-mask" style="display: none;">兑换申请已提交</div>
+
+
+    <script src="../assets/js/jquery.2.0.0.min.js"></script>
+    <script>
+        var SEND = {
+            flag: false,
+            timeout: '',
+            init: function() {
+                SEND.submitBind();
+            },
+            submitBind: function() {
+                var btn = $('.button-submit'),
+                    inputName = $('.input-name'),
+                    inputPhone = $('.input-phone'),
+                    inputAddr = $('.input-addr');
+                    
+
+                btn.on('click', function() {
+                    var name = inputName.val(),
+                        phone = inputPhone.val(),
+                        addr = inputAddr.val();
+                    
+                    if(SEND.flag) {
+                        return false;
+                    }
+
+                    if(!name) {
+                        SEND.showMask('请填写收货人');
+                        return false;
+                    }
+                    if(!phone) {
+                        SEND.showMask('请填写手机号码');
+                        return false;
+                    } 
+                    if(!addr) {
+                        SEND.showMask('请填写详细地址');
+                        return false;
+                    }                    
+
+                    SEND.flag = true;
+                    btn.html('正在提交...');
+
+                    $.ajax({
+                        url: '',
+                        dataType: 'json',
+                        type: 'post',
+                        data: {
+                            'name': name,
+                            'phone': phone,
+                            'address': addr
+                        },
+                        success:function(res) {
+                            if(res.code == 0) {
+                                // succ
+                                btn.html('提交成功');
+                                SEND.showMask('兑换申请已提交');         
+                                location.href = '';
+                            } else {
+                                // fail
+                                SEND.flag = false;
+                                btn.html('提交');
+                                SEND.showMask(res.errorInfo);
+                            }
+                        },
+                        error: function() {
+                            SEND.flag = false;
+                            btn.html('提交');
+                            SEND.showMask('网络异常');
+                        }
+                    });         
+                });
+            },
+            showMask: function(msg) {
+                var tipsMask = $('.tips-mask');
+
+                clearTimeout(SEND.timeout);
+                tipsMask.hide().html(msg).fadeIn(300);
+
+                SEND.timeout = setTimeout(function() {
+                    tipsMask.fadeOut(200)
+                }, 1500);
+            }
+        };
+
+        SEND.init();
+    </script>
+</body>
+</html>
